@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marco Pimpinicchio | (Dis)Ordine</title>
+    <style>
+        /* --- STILE MINIMALISTA (B&W / Courier) --- */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #111111;
+            --font-main: 'Courier New', Courier, monospace;
+            --font-logo: 'Times New Roman', Times, serif; 
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Utility per nascondere elementi */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Animazione di entrata */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Container principale */
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- NAVIGAZIONE --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid transparent;
+        }
+        
+        body.blog-mode nav {
+            border-bottom: 1px solid #eee;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-bottom: 1px solid transparent;
+            user-select: none;
+        }
+
+        .nav-link:hover {
+            border-bottom: 1px solid var(--text-color);
+        }
+
+        /* --- PAGINA PERSONALE (MARCO) --- */
+        #personal-page {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-grow: 1; 
+        }
+
+        h1.about-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .bio {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 580px; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- PAGINA BLOG ((Dis)Ordine) --- */
+        #blog-page {
+            width: 100%;
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo-disordine {
+            font-family: var(--font-logo); 
+            font-size: 3.5rem;
+            font-weight: normal;
+            letter-spacing: -1px;
+        }
+
+        /* Lista Articoli */
+        .article-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .article-item {
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #eee; 
+        }
+        
+        .article-item:last-child {
+            border-bottom: none;
+        }
+
+        .article-date {
+            font-size: 0.8rem;
+            color: #666;
+            display: block;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .article-title {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            line-height: 1.2;
+        }
+
+        .article-title:hover {
+            text-decoration: underline;
+        }
+
+        .article-excerpt {
+            font-size: 1rem;
+            color: #333;
+            font-style: italic; /* Sottotitolo in corsivo nella lista */
+        }
+
+        /* Pagina Singolo Articolo */
+        #single-article-view {
+        }
+        
+        h1.post-title-style {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            margin-top: 0;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        h2.post-subtitle-style {
+            font-size: 1.2rem;
+            font-weight: normal;
+            font-style: italic;
+            margin-bottom: 15px;
+            margin-top: 0;
+            color: #444;
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .author-link {
+            color: var(--text-color);
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .back-btn:hover {
+            border-bottom: 1px solid #000;
+        }
+
+        #post-content {
+            white-space: pre-wrap; 
+            font-size: 1.05rem;
+            text-align: justify; /* Testo giustificato come in un giornale */
+        }
+
+        /* Piccola fix per dispositivi mobili: evita giustificato stretto */
+        @media (max-width: 500px) {
+            #post-content {
+                text-align: left;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- Navigazione Superiore -->
+    <nav>
+        <div id="nav-left">
+            <span id="mini-home-link" class="nav-link hidden" onclick="showPage('personal')">About me</span>
+        </div>
+        <div id="nav-right">
+            <span id="blog-link" class="nav-link" onclick="showPage('blog')">(Dis)Ordine</span>
+        </div>
+    </nav>
+
+    <!-- 1. HOME PERSONALE (About Me) -->
+    <section id="personal-page" class="fade-in">
+        <h1 class="about-title">About me</h1>
+        <p class="bio">
+            I am <strong>Marco Pimpinicchio</strong>, a student of Politics and International Relations at the University of Perugia, in Italy. <br><br>
+            Welcome to my own angle of the web, where you will find what I do and, more importantly, my blog and newsletter, which is called (Dis)Ordine. I hope you will enjoy them!<br><br>
+            My passions and interests include history, politics and all things British!
+        </p>
+    </section>
+
+    <!-- 2. HOME BLOG (Dis)Ordine -->
+    <section id="blog-page" class="hidden fade-in">
+        <div class="blog-header">
+            <div class="logo-disordine">(Dis)Ordine</div>
+        </div>
+
+        <div id="articles-container" class="article-list"></div>
+    </section>
+
+    <!-- 3. VISTA ARTICOLO SINGOLO -->
+    <section id="single-article-view" class="hidden fade-in">
+        <span class="back-btn" onclick="showPage('blog')">← Back to index</span>
+        
+        <!-- Header Articolo -->
+        <h1 id="post-title" class="post-title-style"></h1>
+        <h2 id="post-subtitle" class="post-subtitle-style"></h2>
+        
+        <!-- Meta info (Data e Autore) -->
+        <div class="post-meta">
+            <span id="post-date"></span> | by <span class="author-link" onclick="showPage('personal')">Marco Pimpinicchio</span>
+        </div>
+
+        <div id="post-content"></div>
+    </section>
+
+</div>
+
+<script>
+    // --- DATABASE ARTICOLI ---
+    const articoli = [
+        {
+            id: 1,
+            titolo: 'Cosa significa "Italy first" per Meloni?',
+            sottotitolo: 'Analisi e commento di una recente iniziativa diplomatica e della scelta tra USA e UE',
+            data: '1 Marzo 2025',
+            contenuto: `Tra i principali paesi europei (escludendo dunque l’Ungheria), l’Italia è l’unico il cui governo non abbia esplicitamente espresso sostegno all’Ucraina dopo la lite Trump-Vance-Zelensky a favor di telecamere. Qualche ora dopo l’incidente diplomatico, la Presidente del Consiglio Giorgia Meloni ha proposto un summit tra Stati Uniti ed Unione Europea, senza schierarsi né con gli USA di Trump né con l’Unione e più in generale con l’Europa, che compatta ha appoggiato Zelensky. Tralasciando il riferimento piuttosto bizzarro e a tratti comico al “declino della nostra civiltà” (siamo pur sempre un paese di musichette quando fuori c’è la morte, Boris docet), la scelta di non scegliere da parte di Meloni, unica leader europea a presenziare all’inaugurazione di Donald Trump il 20 gennaio scorso, è più indice di una difficoltà politica tutta italiana che di una reale ed effettiva iniziativa diplomatica: il dialogo Europa-Stati Uniti ha ormai tutte le caratteristiche di un dialogo tra sordi e credere di poter ancora rifiutare di schierarsi con una delle due parti, come se esistesse ancora uno speciale legame transatlantico dopo gli eventi di queste settimane, appare quantomeno anacronistico. L’iniziativa di Meloni, dunque, riflette le difficoltà di schieramento del governo italiano, così come peraltro l’ambiguità di Elly Schlein, che ha affermato di non stare né dalla parte di Trump né dalla parte dell’Europa se favorevole al riarmo, riflette le difficoltà dell’opposizione di interpretare uno scenario internazionale, e il ruolo che spetta all’Italia nel mondo, radicalmente diverso rispetto a quello di appena un mese fa.
+
+In campagna elettorale e più in generale negli anni precedenti la crescita elettorale di Fratelli d’Italia, Giorgia Meloni ha espresso posizioni fortemente contrastanti con quelle che ha poi assunto al governo riguardo alla guerra in Ucraina e all’Unione Europea. Nel 2014, per esempio, chiedeva di rimuovere le sanzioni alla Russia per l’invasione della Crimea e di parte del Donbass, mentre negli anni successivi ha espresso posizioni apertamente euroscettiche. Il riposizionamento del suo partito alla vigilia della campagna elettorale del 2022, che ha visto Fratelli d’Italia vincere le elezioni insieme alla coalizione di centrodestra, è avvenuto dunque in contrasto a quanto detto e sostenuto in precedenza. Meloni non ha potuto non conformarsi al tradizionale “vincolo esterno” della politica estera italiana, per il quale l’alleanza atlantica e l’appartenenza all’Unione Europea non sono in discussione: d’altra parte, il paese per la sua sicurezza dipende dagli Stati Uniti e per l’aspetto economico dall’accesso al mercato europeo e dalla valuta comune.
+
+La recente frattura tra i due poli della politica estera italiana, tuttavia, mette Meloni di fronte a un bivio di difficile soluzione: gli Stati Uniti di Trump, radicalmente diversi rispetto agli Stati Uniti “tradizionali” o l’Unione Europea? Meloni ha da sempre rivendicato una prospettiva “Italy First”, per usare un’espressione trumpiana, e ha anche giurato di “agire nell’interesse esclusivo della Nazione”: quest’ultimo, tuttavia, propende decisamente per un raccordo con le posizioni europee, per ragioni economiche e politico-strategiche, nonché per ragioni ideali (meglio stare con l’aggredito che con l’aggressore, no?) seguendo dunque il resto d’Europa in un graduale, ma a questo punto inevitabile, affrancamento dagli Stati Uniti. L’Italia dipende dai fondi europei del PNRR e da quelli di coesione e regionali non soltanto per la propria prosperità futura, ma anche per la propria sopravvivenza economico-finanziaria presente, dato il livello raggiunto dal debito pubblico e date le stime anemiche di crescita economica da decenni a questa parte. In più, i dazi minacciati da Trump costituiscono un grande rischio per il paese, il cui settore manifatturiero è molto legato a quello tedesco, uno dei bersagli principali delle azioni del presidente americano, secondo il quale l’Unione Europea “non compra le nostre auto”. Si può obiettare che in caso di accordo con Trump l’Italia sarebbe esclusa dai dazi, ma essendo l’Unione Europea riunita in un mercato unico è difficile, anche da un punto di vista legale e pratico, estromettere l’Italia dalle imposizioni di tariffe doganali, o almeno impedire che ciò non abbia conseguenze gravi. Peraltro, isolarsi dall’Europa da un punto di vista economico causerebbe molti più danni per l’economia nazionale rispetto ad un decoupling dagli USA. Da un punto di vista politico-strategico poi, essendo l’Italia un paese europeo, la sicurezza del continente è di vitale importanza per la sicurezza nazionale; illudersi che fare un accordo con Trump possa salvare l’Italia dalle conseguenze del revanscismo russo nella parte centro-orientale dell’Europa è, per l’appunto, un’illusione! Un accordo con Trump con ogni probabilità comporterebbe un drastico aumento delle spese militari per l’Italia, dato che già oggi il presidente americano chiede agli alleati di spendere molto di più in difesa e dato che ogni potenziale raccordo e coordinamento con gli altri paesi europei in questo senso sarebbe precluso.
+
+Il pensiero “Italy first” di Meloni, tuttavia, non coincide affatto con il logico interesse nazionale, ma ha una componente ideologica per nulla trascurabile che gli anni di governo non hanno affatto moderato o temperato, come talvolta si legge sui giornali. Il modello politico di riferimento di Meloni è più simile ad una “democrazia illiberale” sull’esempio ungherese che alla tradizione liberal-democratica dell’Europa Occidentale. Se questo modello è stato espresso soprattutto su un piano di politica interna, con misure quali il reato universale per la gestazione per altri, esso ha tuttavia anche una rilevante dimensione internazionale, testimoniata per esempio dall’ammirazione di Meloni per Orbán, dal “rapporto speciale” con Trump, nonché dalle alleanze internazionali di Fratelli d’Italia. Se Meloni è ritenuta in patria all’estero come moderata non è dunque perché il pragmatismo di stare al governo l’ha resa tale, ma perché il “vincolo esterno” le ha impedito di esplicare una politica estera coerente con la sua matrice ideologica: che questo obiettivo sia venuto meno nel lungo periodo, tuttavia, è del tutto da dimostrare! Caduto un pilastro del suddetto vincolo, e separatosi dall’altro, Meloni si rende conto che un’aperta rottura con l’Europa sull’Ucraina non può che creare danni all’Italia, ma per posizionamento ideologico non può neppure permettersi di rompere apertamente con Trump, con il quale comunque condivide più di un pensiero anche in tema di politica estera. Inoltre, Meloni deve tenere conto delle posizioni degli alleati e in particolare della Lega di Matteo Salvini, che cerca disperatamente di recuperare consensi sul piano interno mostrandosi quasi più trumpiano di Trump e certamente di Meloni, e che sulla questione ucraina ha in più occasioni fatto sue le tesi del Cremlino.
+
+Una scelta di campo, tuttavia, prima o poi dovrà avvenire. Sarà in quell’occasione che si capirà definitivamente quale sia la definizione di “Italy first” da parte del governo Meloni, con conseguenze in ogni caso rilevanti per l’Italia e per il suo posizionamento nel mondo. Il senso dell’iniziativa diplomatica di un summit USA-UE non è comunque in ogni caso quello di salvare la civiltà occidentale, né tantomeno di esprimere un’iniziativa italiana. Più che altro, si tratta di un rinvio di una scelta inevitabile che prima poi il governo dovrà prendere.`
+        }
+    ];
+
+    // --- RIFERIMENTI DOM ---
+    const personalPage = document.getElementById('personal-page');
+    const blogPage = document.getElementById('blog-page');
+    const singleArticlePage = document.getElementById('single-article-view');
+    const body = document.body;
+    const miniHomeLink = document.getElementById('mini-home-link');
+    const blogLink = document.getElementById('blog-link');
+    const articlesContainer = document.getElementById('articles-container');
+
+    // --- FUNZIONE PRINCIPALE DI NAVIGAZIONE ---
+    function showPage(pageName) {
+        // Nascondi tutto
+        personalPage.classList.add('hidden');
+        blogPage.classList.add('hidden');
+        singleArticlePage.classList.add('hidden');
+
+        // Scroll automatico in cima
+        window.scrollTo(0, 0);
+
+        if (pageName === 'personal') {
+            // MOSTRA HOME
+            personalPage.classList.remove('hidden');
+            body.classList.remove('blog-mode');
+            
+            // Gestione Nav
+            miniHomeLink.classList.add('hidden');
+            blogLink.classList.remove('hidden');
+            blogLink.innerHTML = "(Dis)Ordine";
+        } 
+        else if (pageName === 'blog') {
+            // MOSTRA BLOG
+            blogPage.classList.remove('hidden');
+            body.classList.add('blog-mode');
+            
+            // Gestione Nav
+            miniHomeLink.classList.remove('hidden');
+            blogLink.classList.add('hidden');
+            
+            renderArticles();
+        }
+    }
+
+    // --- RENDERIZZA GLI ARTICOLI (LISTA) ---
+    function renderArticles() {
+        articlesContainer.innerHTML = ''; 
+
+        if (articoli.length === 0) {
+            articlesContainer.innerHTML = '<p style="text-align:center;">No posts yet.</p>';
+            return;
+        }
+
+        articoli.forEach(art => {
+            const articleDiv = document.createElement('div');
+            articleDiv.className = 'article-item';
+            
+            // Nella lista usiamo il sottotitolo come anteprima
+            articleDiv.innerHTML = `
+                <span class="article-date">${art.data}</span>
+                <div class="article-title" onclick="openArticle(${art.id})">${art.titolo}</div>
+                <div class="article-excerpt">${art.sottotitolo}</div>
+            `;
+            articlesContainer.appendChild(articleDiv);
+        });
+    }
+
+    // --- APRE UN ARTICOLO SINGOLO ---
+    function openArticle(id) {
+        const art = articoli.find(a => a.id === id);
+        if (!art) return;
+
+        blogPage.classList.add('hidden');
+        singleArticlePage.classList.remove('hidden');
+        window.scrollTo(0, 0);
+
+        document.getElementById('post-title').innerText = art.titolo;
+        document.getElementById('post-subtitle').innerText = art.sottotitolo; // Ora mostra il sottotitolo
+        document.getElementById('post-date').innerText = art.data;
+        document.getElementById('post-content').innerText = art.contenuto;
+    }
+
+    // --- AVVIO INIZIALE ---
+    renderArticles();
+    showPage('personal'); 
+
+</script>
+
+</body>
+</html>
